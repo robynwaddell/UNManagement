@@ -177,7 +177,22 @@
         // Now you can use the selectedCountryId for further operations
     });
 
-     
+   function getCountryNameById(countryId, callback) {
+    $.ajax({
+        url: '/Diplomat/GetCountries',
+        type: 'GET',
+        contentType: 'application/json',
+        dataType: "json",
+        success: function (countries) {
+            var country = countries.find(country => country.CountryId === countryId);
+            var countryName = country ? country.CountryName : 'N/A';
+            callback(countryName);
+        },
+        error: function (errormessage) {
+            console.error(errormessage.responseText);
+            callback('N/A');
+        }
+    });
 }
 
     
