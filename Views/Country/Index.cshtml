@@ -7,3 +7,364 @@
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+ 
+<script type="text/javascript">
+ 
+    $(document).ready(function () {
+        $('#alertSuccess').hide();
+        $('#alertDanger').hide();
+        loadCountriesData();
+    })
+ 
+    // Function to display the countries data
+
+    function loadCountriesData() {
+
+        $.ajax({
+            url: "/Country/GetCountries",
+            type: "GET",
+            contentType: "application/json",
+            dataType: "json",
+            success: function (response) {
+
+                var html = '';
+                console.log(response);
+                $.each(response, function (key, item) {
+                    html += '<tr>'
+                    html += '<td>' + item.CountryName + '</td>'
+                    html += '<td>' + item.Capital + '</td>'
+                    html += '<td>' + item.Continent + '</td>'
+                    html += '<td>' + item.Population + '</td>'
+                    html += '<td><a href="#" onclick="return getCountryById(' + item.CountryId + ')" class="btn-edit" >Edit Country</a> | <a href="#" onclick="return deleteCountry(' + item.CountryId + ')" class="btn-delete">Delete Country</a></td>'
+                    html += '</tr>'
+
+                });;
+ 
+                $('.tbody').html(html);
+
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+
+        })
+
+    }
+ 
+    // Function to register a new country
+
+    function registerCountry() {
+        var countryObj = {
+            CountryName: $('#countryName').val(),
+            Capital: $('#capital').val(),
+            Continent: $('#continent').val(),
+            Population: $('#population').val()
+        };
+        $.ajax({
+            url: '/Country/RegisterCountry',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(countryObj),
+            success: function (response) {
+                if (response == true) {
+                    loadCountriesData();
+                    $('#myModal').modal('hide');
+                    $('.modal-backdrop').hide();
+                }
+                else {
+                    $('#alertDanger').show();
+                    $('#alertDanger').text('Please enter valid country details.');
+                }
+            },
+
+            error: function (errormessage) {
+                $('#alertDanger').show();
+                $('#alertDanger').text(errormessage.responseText);
+            }
+        });
+    }
+ 
+    // Function to get the country by its ID
+
+    function getCountryById(id) {
+        $.ajax({
+            url: "/Country/GetCountryById/" + id,
+            type: "GET",
+            contentType: "application/json",
+            dataType: "json",
+            success: function (response) {
+
+                console.log(response);
+
+                $('#countryId').val(response.CountryId);
+
+                $('#countryName').val(response.CountryName);
+
+                $('#capital').val(response.Capital);
+
+                $('#continent').val(response.Continent);
+
+                $('#population').val(response.Population);
+ 
+                $('#myModal').modal('show');
+
+                $('#btnUpdate').show();
+
+                $('#btnRegister').hide();
+
+            },
+
+            error: function (errormessage) {
+
+                alert(errormessage.responseText);
+
+            }
+
+        })
+
+    }
+ 
+    // Function to update the country details
+
+    function updateCountry() {
+
+        var countryObj = {
+
+            CountryId: $('#countryId').val(),
+
+            CountryName: $('#countryName').val(),
+
+            Capital: $('#capital').val(),
+
+            Continent: $('#continent').val(),
+
+            Population: $('#population').val()
+
+        }
+ 
+        $.ajax({
+
+            url: "/Country/UpdateCountry",
+
+            data: JSON.stringify(countryObj),
+
+            type: "POST",
+
+            contentType: "application/json",
+
+            dataType: "json",
+
+            success: function (response) {
+
+                loadCountriesData();
+
+                $('#myModal').modal('hide');
+
+                $('.modal-backdrop').hide();
+
+            },
+
+            error: function (errormessage) {
+
+                alert(errormessage.responseText);
+
+            }
+
+        });
+
+    };
+ 
+    // Function to delete the country based on country ID.
+
+    function deleteCountry(id) {
+        $.ajax({
+            url: "/Country/DeleteCountry/" + id,
+            // data: JSON.stringify({ countryId: countryId }),
+            type: "POST",
+            contentType: "application/json",
+            dataType: "json",
+            success: function (response) {
+                loadCountriesData();
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        })
+    }
+ 
+ 
+    // Function to clear the textboxes
+
+    function clearTextBoxes() {
+
+        $('#countryName').val("");
+
+        $('#capital').val("");
+
+        $('#continent').val("");
+
+        $('#population').val("");
+
+        $('#myModal').modal('show');
+        $('.modal-backdrop').show();
+
+        $('#btnUpdate').hide();
+
+        $('#btnRegister').show();
+
+        $('#alertSuccess').hide();
+
+        $('#alertDanger').hide();
+
+    }
+ 
+</script>
+ 
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal" onclick="clearTextBoxes()">Add new Country</button>
+ 
+<center><h3>List of Countries</h3></center>
+
+<br />
+ 
+<table class="table table-bordered table-hover">
+
+    <thead>
+
+        <tr>
+
+            <td>Country Name</td>
+
+            <td>Capital</td>
+
+            <td>Continent</td>
+
+            <td>Population</td>
+
+            <td>Action</td>
+
+        </tr>
+
+    </thead>
+
+    <tbody class="tbody">
+
+        @*Country records will be populated here*@
+
+    </tbody>
+
+</table>
+ 
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+ 
+                <h4 class="modal-title">Register Country</h4>
+
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+ 
+            </div>
+ 
+            <div class="modal-body">
+
+                <form>
+ 
+                    <input type="hidden" id="countryId" />
+ 
+                    <div class="row justify-content-center">
+
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+
+                                <input type="text" class="form-control" id="countryName" placeholder="Country Name" />
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <br />
+
+                    <div class="row justify-content-center">
+
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+
+                                <input type="text" class="form-control" id="capital" placeholder="Capital" />
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <br />
+
+                    <div class="row justify-content-center">
+
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+
+                                <input type="text" class="form-control" id="continent" placeholder="Continent" />
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <br />
+
+                    <div class="row justify-content-center">
+
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+
+                                <input type="number" class="form-control" id="population" placeholder="Population" />
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <br />
+
+                    <div class="row justify-content-center">
+
+                        <div class="col-md-6">
+
+                            <div class="alert alert-success" id="alertSuccess"></div>
+
+                            <div class="alert alert-danger" id="alertDanger"></div>
+
+                        </div>
+
+                    </div>
+ 
+                </form>
+
+            </div>
+ 
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-outline-primary" id="btnRegister" onclick="return registerCountry();">Register</button>
+
+                <button type="button" class="btn btn-outline-primary" id="btnUpdate" onclick="return updateCountry();">Update</button>
+
+            </div>
+ 
+        </div>
+
+    </div>
+
+</div>

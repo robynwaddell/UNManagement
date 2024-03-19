@@ -7,3 +7,245 @@
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script type ="text/javascript">
+    $(document).ready(function () {
+        $('#alertSuccess').hide();
+        $('#alertDanger').hide();
+        loadDiplomatsData();
+        populateCountriesDropdown();
+    });
+
+    function loadDiplomatsData() {
+        $.ajax({
+            url: '/Diplomat/GetDiplomats',
+            type: 'GET',
+            contentType: 'application/json',
+            dataType: "json",
+            success: function (response) {
+                var html = '';
+                $.each(response, function (key, item) {
+                    html += '<tr>'
+                    html += '<td>' + item.DiplomatName + '</td>'
+                    html += '<td>' + item.Designation + '</td>'
+                    html += '<td>' + item.CountryId + '</td>'
+                    html += '<td><a href="#" onClick="return GetDiplomatById(' + item.DiplomatId + ')">Edit Diplomat</a> | <a href="#" onClick="DeleteDiplomat(' + item.DiplomatId + ')" class="btn-delete">Delete Diplomat</a> </td>'
+                    html += '</tr>'
+                });
+                $('.tbody').html(html);
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+    function ClearText() {
+        $('#myModal').modal('show');
+        $('#diplomatName').val('');
+        $('#designation').val('');
+        $('#country').val('');
+        $('.modal-backdrop').show();
+        $('#myModal').modal('show');
+        $("#btnAdd").show();
+        $("#btnUpdate").hide();
+        $('#alertSuccess').hide();
+        $('#alertDanger').hide();
+    }
+
+    function GetDiplomatById(id) {
+        $.ajax({
+            url: '/Diplomat/GetDiplomatById/' + id,
+            type: 'GET',
+            contentType: 'application/json',
+            dataType: "json",
+            success: function (response) {
+                console.log(response);
+                    // Populate modal fields with the retrieved data
+                    $('#diplomatId').val(response.DiplomatId);
+                    $('#diplomatName').val(response.DiplomatName);
+                    $('#designation').val(response.Designation);
+                    $('#country').val(response.CountryId);
+
+                    // Change button to Update mode
+                    $("#btnAdd").hide();
+                    $("#btnUpdate").show();
+
+                    // Manually open the modal
+                    $('#myModal').modal('show');
+               
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+        return false;
+    }
+
+    function Register() {
+        var diplomatObj = {
+            DiplomatName: $('#diplomatName').val(),
+            Designation: $('#designation').val(),
+            CountryId: $('#country').val()
+        }
+        $.ajax({
+            url: '/Diplomat/RegisterDiplomat',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(diplomatObj),
+            success: function (response) {
+                if (response == true) {
+                    $('#myModal').modal('hide');
+                    $('.modal-backdrop').show();
+                    loadDiplomatsData();
+                } else {
+                    $('#alertDanger').show();
+                    $('#alertDanger').text(response.message);
+                }
+            },
+            error: function (errormessage) {
+                $('#alertDanger').show();
+                $('#alertDanger').text(errormessage.responseText);
+            }
+        });
+    }
+
+    function DeleteDiplomat(id) {
+        $.ajax({
+            url: '/Diplomat/DeleteDiplomat/' + id,
+            type: 'POST',
+            contentType: "application/json",
+            dataType: "json",
+            success: function () {
+                loadDiplomatsData();
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+    function Update() {
+        var tripObj = {
+            DiplomatId: Number($('#diplomatId').val()),
+            DiplomatName: $('#diplomatName').val(),
+            Designation: $('#designation').val(),
+            CountryId: $('#country').val(),
+        }
+
+        $.ajax({
+            url: "/Diplomat/UpdateDiplomat",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(tripObj),
+            dataType: "json",
+            success: function (response) {
+                if (response == true) {
+                    $('#myModal').modal('hide');
+                    $('.modal-backdrop').show();
+                    loadDiplomatsData();
+                } else {
+                    alert(response.message);
+                }
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+    function populateCountriesDropdown() {
+        $.ajax({
+            url: '/Country/GetCountries',
+            type: 'GET',
+            contentType: 'application/json',
+            dataType: 'json',
+            success: function (countries) {
+                var dropdown = $('#country');
+                dropdown.empty();
+                $.each(countries, function (key, country) {
+                    dropdown.append($('<option></option>').attr('value', country.CountryId).text(country.CountryName));
+                });
+            },
+            error: function (errormessage) {
+                console.error(errormessage.responseText);
+            }
+        });
+    }
+
+    $('#country').change(function () {
+        var selectedCountryId = $(this).val();
+        // Now you can use the selectedCountryId for further operations
+    });
+
+     
+}
+
+    
+</script>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <div>
+        <center><h3>List of Diplomats</h3></center>
+        <br />
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <td>Full Name</td>
+                    <td>Designation</td>
+                    <td>Country</td>
+                    <td>Action</td>
+                </tr>
+            </thead>
+            <tbody class="tbody">
+                @*Records will go here*@
+            </tbody>
+        </table>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="ClearText();">Add New Diplomat</button>
+
+    </div>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Register or Edit Diplomat</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <input type="hidden" id="diplomatId" />
+                        <div class="row justify-content-center">
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" id="diplomatName" placeholder="Full Name" />
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row justify-content-center">
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" id="designation" placeholder="Designation" />
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row justify-content-center">
+                            <div class="col-md-6">
+                                <select class="form-control" id="country"></select>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-md-6">
+                                <div class="alert alert-success" id="alertSuccess"></div>
+                                <div class="alert alert-danger" id="alertDanger"></div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-primary" id="btnAdd" onclick="return Register();">Add</button>
+                    <button type="button" class="btn btn-outline-secondary" id="btnUpdate" onclick="return Update();">Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+

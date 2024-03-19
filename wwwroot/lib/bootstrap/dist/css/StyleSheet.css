@@ -1,0 +1,13 @@
+﻿body {
+}
+
+homeImg{
+    width: 100%;
+    height: fit-content;
+    url: "/wwwroot/img/"
+}
+
+.navcolor {
+    background-color: #009edb;
+    color: #fff;
+}
