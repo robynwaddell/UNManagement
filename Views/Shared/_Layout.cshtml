@@ -3,18 +3,18 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - United Nations</title>
+    <title>@ViewData["Title"] - UNManagement</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/UNManagement.styles.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/StyleSheet.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/StyleSheet.css" />
 
 </head>
 <body>
-    <header>
+    <header id="head-color">
         <nav class=" navcolor navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">UNManagement</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">United Nations</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -31,7 +31,16 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Diplomat" asp-action="Index">Diplomats</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Assembly" asp-action="Index">Assemblies</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="CountryAssembly" asp-action="Index">Assemblies</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="CountryAssembly" asp-action="CountryAssemblyResult">Results</a>
+                        </li>
+                        <li id="rn-one"class="nav-item">
+                            <a class="nav-link text-dark" asp-area=""  >About Us</a>
+                        </li>
+                        <li id="rn-two"class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" >Contact Us</a>
                         </li>
                     </ul>
                 </div>

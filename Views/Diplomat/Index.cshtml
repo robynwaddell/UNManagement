@@ -28,7 +28,7 @@
                     html += '<td>' + item.DiplomatName + '</td>'
                     html += '<td>' + item.Designation + '</td>'
                     html += '<td>' + item.CountryId + '</td>'
-                    html += '<td><a href="#" onClick="return GetDiplomatById(' + item.DiplomatId + ')">Edit Diplomat</a> | <a href="#" onClick="DeleteDiplomat(' + item.DiplomatId + ')" class="btn-delete">Delete Diplomat</a> </td>'
+                    html += '<td><a href="#" class="btn-edit" onClick="return GetDiplomatById(' + item.DiplomatId + ')">Edit Diplomat</a> | <a href="#" class="btn-delete" onClick="DeleteDiplomat(' + item.DiplomatId + ')" class="btn-delete">Delete Diplomat</a> </td>'
                     html += '</tr>'
                 });
                 $('.tbody').html(html);
@@ -99,7 +99,7 @@
                     loadDiplomatsData();
                 } else {
                     $('#alertDanger').show();
-                    $('#alertDanger').text(response.message);
+                    $('#alertDanger').text("Please enter valid diplomat details");
                 }
             },
             error: function (errormessage) {
@@ -218,7 +218,8 @@
                 @*Records will go here*@
             </tbody>
         </table>
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="ClearText();">Add New Diplomat</button>
+        <br />
+        <button type="button" class="btn btn-primary" id="btn-add" data-toggle="modal" data-target="#myModal" onclick="ClearText();">Add New Diplomat</button>
 
     </div>
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -244,6 +245,7 @@
                         <br />
                         <div class="row justify-content-center">
                             <div class="col-md-6">
+                                <label id="dropdown-label">Please Select a Country</label>
                                 <select class="form-control" id="country"></select>
                             </div>
                         </div>
@@ -257,7 +259,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-primary" id="btnAdd" onclick="return Register();">Add</button>
-                    <button type="button" class="btn btn-outline-secondary" id="btnUpdate" onclick="return Update();">Update</button>
+                    <button type="button" class="btn btn-outline-primary" id="btnUpdate" onclick="return Update();">Update</button>
                 </div>
             </div>
         </div>

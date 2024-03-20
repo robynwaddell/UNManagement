@@ -1,8 +1,173 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
+        color: #333;
+    }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    .container {
+        margin-top: 50px;
+    }
+
+    .jumbotron {
+        background: linear-gradient(to right, #007bff, #0056b3);
+        color: #fff;
+        padding: 100px 20px;
+        margin-bottom: 50px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+        .jumbotron h1 {
+            font-size: 3rem;
+            font-weight: bold;
+        }
+
+        .jumbotron p {
+            font-size: 1.2rem;
+        }
+
+        .jumbotron hr {
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+    .btn-primary {
+        background-color: #009edb;
+        border-color: #0062cc;
+        border-radius: 25px;
+        padding: 10px 30px;
+        font-size: 1.2rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+    }
+
+        .btn-primary:hover {
+            background-color: #009edb;
+            border-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+    .card {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+    .card-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 15px;
+        color: #009edb;
+    }
+
+    .card-text {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        color: #555;
+    }
+
+    .card-link {
+        color: #009edb;
+        font-weight: bold;
+        transition: color 0.3s ease;
+    }
+
+        .card-link:hover {
+            color: #009edb;
+        }
+
+    .features {
+        margin-top: 100px;
+        margin-bottom: 100px;
+    }
+
+    .feature-icon {
+        font-size: 4rem;
+        color: #009edb;
+        margin-bottom: 20px;
+    }
+
+    .feature-title {
+        font-size: 1.8rem;
+        font-weight: bold;
+        margin-bottom: 15px;
+        color: #009edb;
+    }
+
+    .feature-description {
+        font-size: 1.2rem;
+        line-height: 1.6;
+        color: #555;
+    }
+
+    .spacer{
+        margin-top: 200px;
+    }
+</style>
+
+<div id="text-container" class="text-center">
+    <h1 id="hero-text" class="display-4">United Nations</h1>
+    <p id="slogan">Harnessing Global Unity for Sustainable Progress</p>
+</div>
+
+<div class="row spacer">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Our Mission</h5>
+                <p class="card-text">Learn about our commitment to fostering unity and cooperation among nations.</p>
+                <a href="#" class="btn btn-primary">Read More</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Our Vision</h5>
+                <p class="card-text">Discover our vision for a world where organizations work together for the greater good.</p>
+                <a href="#" class="btn btn-primary">Read More</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Get Involved</h5>
+                <p class="card-text">Find out how you can contribute to our mission and become part of our global community.</p>
+                <a href="#" class="btn btn-primary">Join Us</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="features">
+        <div class="row">
+            <div class="col-md-4 text-center">
+                <i class="fas fa-globe-americas feature-icon"></i>
+                <h2 class="feature-title">Global Reach</h2>
+                <p class="feature-description">Our initiatives span across continents, reaching millions of people worldwide.</p>
+            </div>
+            <div class="col-md-4 text-center">
+                <i class="fas fa-hands-helping feature-icon"></i>
+                <h2 class="feature-title">Collaborative Efforts</h2>
+                <p class="feature-description">We believe in the power of collaboration and work closely with partner organizations to achieve our goals.</p>
+            </div>
+            <div class="col-md-4 text-center">
+                <i class="fas fa-lightbulb feature-icon"></i>
+                <h2 class="feature-title">Innovative Solutions</h2>
+                <p class="feature-description">We continuously strive to develop innovative solutions to address global challenges and foster positive change.</p>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
 </div>

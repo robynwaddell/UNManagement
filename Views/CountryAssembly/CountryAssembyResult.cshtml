@@ -1,0 +1,33 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model List<Entities.ViewModels.CountryAssemblyResult>
+
+<h3>Country Assembly Result</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Country Name</th>
+            <th>Selected Diplomats</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var CountryAssemblyResult in Model)
+        {
+            <tr>
+                <td>@CountryAssemblyResult.CountryName</td>
+                <td>
+                    <ul>
+                        @foreach (var diplomat in CountryAssemblyResult.SelectedDiplomats)
+                        {
+                            <li>@diplomat</li>
+                        }
+                    </ul>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
